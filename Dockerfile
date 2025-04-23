@@ -17,6 +17,9 @@ RUN pip install --no-cache-dir torch==2.0.1+cpu torchvision==0.15.2+cpu -f https
 # Install other requirements
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Create models directory
+RUN mkdir -p /app/models
+
 # Copy application code
 COPY . .
 
@@ -25,4 +28,4 @@ ENV MODEL_PATH=/app/models/furniture_detection.pt
 ENV PORT=8080
 
 # Run the application
-CMD exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT} 
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"] 
