@@ -28,5 +28,5 @@ ENV MODEL_PATH=/app/models/furniture_detection.pt
 ENV PORT=8080
 ENV PYTHONUNBUFFERED=1
 
-# Run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--log-level", "info"] 
+# Run the application with increased timeout
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--log-level", "info", "--timeout-keep-alive", "120"] 
