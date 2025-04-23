@@ -8,8 +8,13 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install dependencies
+# Install Python dependencies in two steps for better caching
 COPY requirements.txt .
+
+# Install PyTorch separately (with CPU only to reduce size)
+RUN pip install --no-cache-dir torch==2.0.1+cpu torchvision==0.15.2+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
+
+# Install other requirements
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
