@@ -8,23 +8,23 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies in two steps for better caching
+# Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install PyTorch separately (with CPU only to reduce size)
+# Install PyTorch CPU version first
 RUN pip install --no-cache-dir torch==2.0.1+cpu torchvision==0.15.2+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
 
-# Install other requirements
-RUN pip install --no-cache-dir -r requirements.txt
+# Install numpy and other requirements
+RUN pip install --no-cache-dir numpy==1.24.3 && pip install --no-cache-dir -r requirements.txt
 
 # Create models directory
 RUN mkdir -p /app/models
 
-# Copy application code
+# Copy the application code
 COPY . .
 
 # Set environment variables
-ENV MODEL_PATH=/app/models/furniture_detection.pt
+ENV MODEL_PATH=/app/models
 ENV PORT=8080
 ENV PYTHONUNBUFFERED=1
 
